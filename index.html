@@ -26,17 +26,31 @@
                     <div class="form-text">Must be at least 6 characters.</div>
                 </div>
 
+                <div class="mb-3">
+                    <label for="department" class="form-label">Department (No Validation)</label>
+                    <select class="form-select" id="department" name="department">
+                        <option value="sales">Sales</option>
+                        <option value="support">Support</option>
+                        <option value="dev">Development</option>
+                    </select>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter">
+                    <label class="form-check-label" for="newsletter">Subscribe to newsletter (No Validation)</label>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
 
     <!-- Validator Library -->
-    <script src="simple-validator.js"></script>
+    <script src="bs5-form-validator.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            new SimpleValidator('#myForm', {
+            new BS5FormValidator('#myForm', {
                 fields: {
                     email: {
                         test: function (val) {

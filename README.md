@@ -1,4 +1,4 @@
-# Simple Validator for Bootstrap 5
+# BS5FormValidator
 
 A lightweight, "old school" JavaScript form validation library designed for Bootstrap 5. It handles validation logic, error styling, and submit button states without any build step required.
 
@@ -8,6 +8,7 @@ A lightweight, "old school" JavaScript form validation library designed for Boot
 -   **Real-time Validation**: Clears errors immediately as the user types valid data.
 -   **Submit Button State**: Automatically disables the button and shows a loading spinner during processing.
 -   **AJAX Ready**: Simple callbacks for success and failure handling.
+-   **Full Data Collection**: Collects all form values (even non-validated ones) for easy AJAX submission.
 -   **Zero Dependencies**: Just drop it in and use it.
 
 ## Installation
@@ -15,7 +16,7 @@ A lightweight, "old school" JavaScript form validation library designed for Boot
 Include the script in your HTML file (after Bootstrap):
 
 ```html
-<script src="simple-validator.min.js"></script>
+<script src="bs5-form-validator.min.js"></script>
 ```
 
 ## Usage
@@ -37,7 +38,7 @@ Ensure your inputs have `name` attributes.
 ### 2. Initialize the Validator
 
 ```javascript
-new SimpleValidator('#myForm', {
+new BS5FormValidator('#myForm', {
     fields: {
         email: {
             test: function(val) {
@@ -75,9 +76,8 @@ new SimpleValidator('#myForm', {
 | Option | Type | Description |
 | :--- | :--- | :--- |
 | `fields` | `Object` | **Required**. Key-value pairs where keys match input `name` attributes. |
-| `submitButton` | `String` | Selector for the submit button. Defaults to `form.querySelector('[type="submit"]')`. |
 | `submitButtonLoading` | `String` | HTML content to display inside the button during loading state. |
-| `onValid` | `Function` | Callback when form is valid. Receives `(event, form, values, reset)`. |
+| `onValid` | `Function` | Callback when form is valid. Receives `(event, form, values, reset)`. `values` contains **all** form fields. |
 | `onInvalid` | `Function` | Callback when form is invalid. Receives `(errors)`. |
 
 ### Field Configuration
