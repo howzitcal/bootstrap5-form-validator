@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validator Demo</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <div class="card p-4">
+            <h2 class="mb-4">Simple Validator Demo</h2>
+            <form id="myForm">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email">
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                    <div class="form-text">Must be at least 6 characters.</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Validator Library -->
+    <script src="simple-validator.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            new SimpleValidator('#myForm', {
+                fields: {
+                    email: {
+                        test: function (val) {
+                            // Simple email regex
+                            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+                        },
+                        error_message: "Please insert a valid email address"
+                    },
+                    password: {
+                        test: function (val) {
+                            return val.length >= 6;
+                        },
+                        error_message: "Password must be at least 6 characters long"
+                    }
+                },
+                submitButtonLoading: '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...',
+                onValid: function (e, form, values, reset) {
+                    console.log('Form is valid!', values);
+                    e.preventDefault(); // Stop submission for demo
+
+                    // Simulate AJAX
+                    setTimeout(function () {
+                        alert('Success! Check console (simulating 2s delay)');
+                        reset(); // Restore button
+                    }, 2000);
+                },
+                onInvalid: function (errors) {
+                    console.log('Form errors:', errors);
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
