@@ -53,14 +53,18 @@
             new BS5FormValidator('#myForm', {
                 fields: {
                     email: {
-                        test: function (val) {
+                        test: function (val, values) {
                             // Simple email regex
+                            // val: the value of this field
+                            // values: all form data as a JSON object
                             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
                         },
                         error_message: "Please insert a valid email address"
                     },
                     password: {
-                        test: function (val) {
+                        test: function (val, values) {
+                            // val: the value of this field
+                            // values: all form data as a JSON object
                             return val.length >= 6;
                         },
                         error_message: "Password must be at least 6 characters long"

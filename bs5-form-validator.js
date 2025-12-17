@@ -34,6 +34,7 @@
     };
 
     BS5FormValidator.prototype.handleInput = function (e) {
+        var self = this;
         var input = e.target;
         var fieldName = input.getAttribute('name');
 
@@ -45,7 +46,38 @@
         // but we clear errors immediately when they fix them.
         if (input.classList.contains('is-invalid')) {
             var fieldConfig = this.fields[fieldName];
-            var valid = fieldConfig.test(input.value);
+            
+            // Collect all form values
+            var values = {};
+            var elements = this.form.querySelectorAll('[name]');
+            for (var i = 0; i < elements.length; i++) {
+                var el = elements[i];
+                var name = el.getAttribute('name');
+                var type = el.getAttribute('type');
+
+                if (type === 'radio') {
+                    if (el.checked) {
+                        values[name] = el.value;
+                    }
+                } else if (type === 'checkbox') {
+                    if (!values.hasOwnProperty(name)) {
+                        var checkboxes = self.form.querySelectorAll('[name="' + name + '"]');
+                        if (checkboxes.length > 1) {
+                            var checked = [];
+                            for (var j = 0; j < checkboxes.length; j++) {
+                                if (checkboxes[j].checked) checked.push(checkboxes[j].value);
+                            }
+                            values[name] = checked;
+                        } else {
+                            values[name] = el.checked;
+                        }
+                    }
+                } else {
+                    values[name] = el.value;
+                }
+            }
+            
+            var valid = fieldConfig.test(input.value, values);
             if (valid) {
                 this.clearError(input);
             }
@@ -103,7 +135,7 @@
 
                 var value = input.value;
                 // values[fieldName] = value; // Already collected above
-                var valid = fieldConfig.test(value);
+                var valid = fieldConfig.test(value, values);
 
                 if (!valid) {
                     isValid = false;
